@@ -1,6 +1,7 @@
 export interface Note {
   id: string;
   currency_note: number;
+  currency: string;
   count: number;
   total_amount: number;
   text?: string;

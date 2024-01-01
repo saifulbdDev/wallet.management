@@ -1,89 +1,83 @@
+// Notes.tsx
 "use client";
+import React, { useState } from 'react';
+import classnames from 'classnames';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
+import NoteItem from './NoteItem';
+import { Note } from '@/types/note.type';
 
-import classnames from "classnames";
-
-import { TrashIcon } from "@heroicons/react/20/solid";
-import { Note } from "@/types/note.type";
-import { getCurrencySymbols } from "@/utils";
-const statuses = {
-  Income: "text-green-700 bg-green-50 ring-green-600/20",
-  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Expense: "text-yellow-800 bg-yellow-50 ring-yellow-600/20"
-};
 
 interface NotesProps {
-  notes: Note[];
-  currency: string;
-
+  notes: Note[];  
   removeNote: (noteId: string) => void;
+  handleViewNote: (note: Note) => void;
 }
 
-const Notes: React.FC<NotesProps> = ({
-  notes,
-  removeNote,
-  currency
-}) => {
-  console.log(notes, "notes");
 
-  const formatDate = (dateString: string | undefined): string => {
-    if (!dateString) return "";
 
-    const formattedDate = new Date(dateString).toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    });
+const Notes: React.FC<NotesProps> = ({ notes, removeNote, handleViewNote }) => {
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
-    return formattedDate;
-  };
+  const indexOfLastNote = currentPage * itemsPerPage;
+  const indexOfFirstNote = indexOfLastNote - itemsPerPage;
+  const currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
+
+  const totalPages = Math.ceil(notes.length / itemsPerPage);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const nextPage = () => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  const prevPage = () => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+
   return (
-    <ul role="list" className="divide-y divide-gray-100">
-      {notes.map((note) => (
-        <li
-          key={note.id}
-          className="flex items-center justify-between gap-x-6 py-5">
-          <div className="min-w-0">
-            <div className="flex items-start gap-x-3">
-              <p className="text-sm font-semibold leading-6 text-gray-900">
-                <b>Total Amount :</b> {getCurrencySymbols(note?.currency)}{" "}
-                {note?.total_amount}
-              </p>
-              <p
-                className={classnames(`
-                  rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium',
-                  ${statuses[note.type]}`)}>
-                {note.type}
-              </p>
-            </div>
-            <div>
-              <p className="whitespace-nowrap">{note?.text}</p>
-            </div>
-            <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-              <p className="whitespace-nowrap">
-                <b>Created Date : </b> {formatDate(note?.created_date)}
-              </p>
-            </div>
-          </div>
+    <>
+      <ul role="list" className="divide-y min-h-full divide-gray-100">
+        {currentNotes.map((note) => (
+          <NoteItem key={note.id} note={note} removeNote={removeNote} handleViewNote={handleViewNote} />
+        ))}
+      </ul>
 
-          <div className="flex flex-none items-center gap-x-4">
-            <button
-              type="button"
-              className={`hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block   ${
-                statuses[note.type]
-              }`}>
-              View note
-            </button>
-            <button
-              type="button"
-              onClick={() => removeNote(note.id)}
-              className="hidden rounded-md bg-red-300 px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block   ${ ">
-              <TrashIcon className="w-5 h-5 text-red-700" />
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+      {totalPages > 1 && (
+        <nav className="mt-4 text-end border-t border-gray-200 py-3">
+          <ul className="pagination isolate inline-flex -space-x-px rounded-md shadow-sm justify-end">
+            <li className="inline-block">
+              <button
+                onClick={prevPage}
+                className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              >
+                <span className="sr-only">Previous</span>
+                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </li>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <li key={index} className="inline-block">
+                <button
+                  onClick={() => paginate(index + 1)}
+                  className={classnames(
+                    'relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex',
+                    {
+                      'bg-indigo-500 text-white': currentPage === index + 1,
+                      'bg-gray-200 text-gray-800': currentPage !== index + 1,
+                    }
+                  )}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+            <li className="inline-block">
+              <button
+                onClick={nextPage}
+                className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+              >
+                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
+    </>
   );
 };
 

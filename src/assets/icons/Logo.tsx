@@ -1,5 +1,5 @@
 import React from "react";
-const Loader = (
+const Logo = (
   props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
 ) => {
   return (
@@ -27,4 +27,4 @@ const Loader = (
   );
 };
 
-export default Loader;
+export default Logo;

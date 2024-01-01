@@ -1,30 +1,51 @@
 import React from "react";
 
-const Balance = ({ data }) => {
-  const currencyTotals = data.reduce((acc, transaction) => {
-    const { currency, total_amount } = transaction;
-    acc[currency] = (acc[currency] || 0) + total_amount;
-    return acc;
-  }, {});
+interface Transaction {
+  id: string;
+  currency: string;
+  total_amount: number;
+  // Add other properties as needed
+}
+
+interface BalanceProps {
+  data: Transaction[];
+  convartCurrency: (amount: number, currency:string) => string; // Assuming your conversion function takes a number and returns a string
+}
+
+const Balance: React.FC<BalanceProps> = ({ data, convartCurrency }) => {
+  const currencyTotals: Record<string, number> = data.reduce(
+    (acc, transaction) => {
+      const { currency, total_amount } = transaction;
+      acc[currency] = (acc[currency] || 0) + total_amount;
+      return acc;
+    },
+    {}
+  );
+
   return (
-    <div className="bg-indigo-700 bg-[url('/background-currency.svg')]  bg-no-repeat bg-center bg-contain rounded-3xl shadow-lg p-3">
+   
+    
+    
       <table className="min-w-full">
         <thead className="border-b border-gray-300 text-gray-900">
           <tr>
             <th
               scope="col"
-              className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-0  ">
+              className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-0"
+            >
               Currency
             </th>
             <th
               scope="col"
-              className="hidden px-3 py-3.5 text-left text-sm font-semibold text-white sm:table-cell">
-              Total Amount
+              className="hidden px-3 py-3.5 text-left text-sm font-semibold text-white sm:table-cell"
+            >
+              Amount
             </th>
             <th
               scope="col"
-              className="hidden px-3 py-3.5 text-left text-sm font-semibold text-white sm:table-cell">
-              Total USD
+              className="hidden px-3 py-3.5 text-left text-sm font-semibold text-white sm:table-cell"
+            >
+              USD
             </th>
           </tr>
         </thead>
@@ -40,15 +61,13 @@ const Balance = ({ data }) => {
                 {totalAmount}
               </td>
               <td className="py-5 pl-3 pr-4 text-left text-sm text-white sm:pr-0">
-                {totalAmount}
+                {convartCurrency(totalAmount, currency)}
               </td>
             </tr>
           ))}
-
-      
         </tbody>
       </table>
-    </div>
+   
   );
 };
 
