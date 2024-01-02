@@ -40,10 +40,10 @@ const Home: React.FC<HomeProps> = () => {
 
   const selectCurrency = getCurrencySymbols(currency);
 
-  const convartCurrency = (count: number, currency: string) => {
+  const convertCurrency = (amount: number, currency: string): number => {
     const exchangeRate =
       data?.data["USD"]?.value / data?.data[currency?.toUpperCase()]?.value;
-    return Math.ceil(count * exchangeRate) || 0;
+    return Math.ceil(amount * exchangeRate) || 0;
   };
 
   const handleAddNote = (note: Note) => {
@@ -147,7 +147,7 @@ const Home: React.FC<HomeProps> = () => {
                 <h2 className="capitalize mt-3 text-xl text-white font-bold">
                   currency wise balance List
                 </h2>
-                <Balance data={notes} convartCurrency={convartCurrency} />
+                <Balance data={notes} convertCurrency={convertCurrency} />
               </div>
               <Statistics notes={notes} />
             </>

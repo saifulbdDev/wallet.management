@@ -70,7 +70,7 @@ const Statistics: React.FC<StatisticsProps> = ({ notes }) => {
         borderWidth: 0,
       },
     },
-    series: series,
+    series: series as Highcharts.SeriesOptionsType[]
   };
 
   return (

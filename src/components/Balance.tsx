@@ -1,25 +1,25 @@
 import React from "react";
+import { Note } from "@/types/note.type";
 
-interface Transaction {
-  id: string;
-  currency: string;
-  total_amount: number;
-  // Add other properties as needed
-}
 
 interface BalanceProps {
-  data: Transaction[];
-  convartCurrency: (amount: number, currency:string) => string; // Assuming your conversion function takes a number and returns a string
+  data: Note[];
+  convertCurrency: (amount: number, currency:string) => number; // Assuming your conversion function takes a number and returns a string
 }
 
-const Balance: React.FC<BalanceProps> = ({ data, convartCurrency }) => {
+interface CurrencyTotals {
+  [currency: string]: number;
+}
+
+
+const Balance: React.FC<BalanceProps> = ({ data, convertCurrency }) => {
   const currencyTotals: Record<string, number> = data.reduce(
     (acc, transaction) => {
       const { currency, total_amount } = transaction;
       acc[currency] = (acc[currency] || 0) + total_amount;
       return acc;
     },
-    {}
+    {} as CurrencyTotals
   );
 
   return (
@@ -61,7 +61,7 @@ const Balance: React.FC<BalanceProps> = ({ data, convartCurrency }) => {
                 {totalAmount}
               </td>
               <td className="py-5 pl-3 pr-4 text-left text-sm text-white sm:pr-0">
-                {convartCurrency(totalAmount, currency)}
+                {convertCurrency(totalAmount, currency)}
               </td>
             </tr>
           ))}
