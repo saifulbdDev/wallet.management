@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import Notes from "@/components/Notes";
 import React, { useState } from "react";
