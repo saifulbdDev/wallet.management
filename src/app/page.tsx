@@ -69,18 +69,16 @@ const Home: React.FC<HomeProps> = () => {
     const promises: Promise<Note>[] = Array.from({ length: 100 }, () => generateRandomNote());
   
     const results = await Promise.allSettled(promises);
-   
-
+  
     const successfulResults = results
       .filter(result => result.status === 'fulfilled')
-      .map(result => result.value as Note);
+      .map(result => (result as PromiseFulfilledResult<Note>).value);
   
-   
     dispatch(addNotes(successfulResults));
   
     const errors = results
       .filter(result => result.status === 'rejected')
-      .map(result => result.reason);
+      .map(result => (result as PromiseRejectedResult).reason);
   
     if (errors.length > 0) {
       console.error('Errors occurred during random note generation:', errors);
