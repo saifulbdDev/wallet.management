@@ -32,7 +32,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, removeNote, handleViewNote })
           <p
             className={classnames(
               'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium',
-              statuses[type]
+              statuses[type] as string
             )}
           >
             {type}
@@ -54,7 +54,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, removeNote, handleViewNote })
           type="button"
           className={`
             rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block
-            ${statuses[type]}`}
+            ${statuses[type] as string}`}
         >
           View note
         </button>

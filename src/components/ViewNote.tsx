@@ -6,10 +6,10 @@ import Button from "@/components/ui/Buttons/Button";
 import { getCurrencySymbols } from "@/utils";
 import { Note } from "@/types/note.type";
 
-const statuses = {
-  Income: "text-green-700 bg-green-50 ring-green-600/20",
-  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Expense: "text-yellow-800 bg-yellow-50 ring-yellow-600/20"
+const statuses: Record<string, string> = {
+  Income: 'text-green-700 bg-green-50 ring-green-600/20',
+  'In progress': 'text-gray-600 bg-gray-50 ring-gray-500/10',
+  Expense: 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
 };
 interface ViewNoteProps {
   isOpen: boolean;
@@ -50,9 +50,7 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
                   <b>Currency Note :</b> {currency_note}
                 </p>
                 <p
-                  className={classnames(`
-              rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium',
-              ${statuses[type]}`)}>
+                  className={classnames(`rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium', ${statuses[type] as string}`)}>
                   {type}
                 </p>
               </div>
