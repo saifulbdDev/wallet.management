@@ -16,7 +16,7 @@ interface NotesProps {
 
 
 const Notes: React.FC<NotesProps> = ({ notes, removeNote, handleViewNote }) => {
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastNote = currentPage * itemsPerPage;

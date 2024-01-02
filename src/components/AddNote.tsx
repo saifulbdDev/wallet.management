@@ -6,7 +6,7 @@ import Button from "@/components/ui/Buttons/Button";
 import { noteSchema } from "@/utils/validations/note";
 import { Formik, Form } from "formik";
 import { Note } from "@/types/note.type";
-import {formatDate} from "@/utils"
+import {formatDate, uuidv4} from "@/utils"
 
 interface AddNoteProps {
   isOpen: boolean;
@@ -37,7 +37,7 @@ const AddNote: React.FC<AddNoteProps> = ({
     addNote({
       ...values,
       created_date:newDate,
-      id: Date.now().toString() // ID generation
+      id: uuidv4() // ID generation
     });
     setIsOpen(false);
   };

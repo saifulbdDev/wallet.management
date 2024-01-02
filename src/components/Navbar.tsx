@@ -8,14 +8,9 @@ import { TransactioState } from "@/types/note.type";
 import { setCurrency } from "@/features/transaction/transactionSlice";
 import { Bars3Icon } from "@heroicons/react/20/solid";
 import { BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Image from 'next/image';
-import Link from 'next/link';
-const navigation = [
-  { name: "Home", href: "#" },
-  { name: "Invoices", href: "#" },
-  { name: "Clients", href: "#" },
-  { name: "Expenses", href: "#" }
-];
+import {currencyOptions, navigation} from '@/utils'
+import Image from "next/image";
+import Link from "next/link";
 
 export default function NavBar() {
   const dispatch = useDispatch();
@@ -44,19 +39,18 @@ export default function NavBar() {
             <Bars3Icon className="h-5 w-5 text-gray-900" aria-hidden="true" />
           </button>
           <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-3">
-          <span className="sr-only">Your Company</span>
-       
-          <Image
-            src="/icon-wallet.svg"
-            alt="Vercel Logo"
-            className=" mx-auto"
-            width={50}
-            height={30}
-            priority
-          />
-          <h2 className="text-3xl font-bold mb-0">Wallet</h2>
-       
-        </Link>
+            <span className="sr-only">Your Company</span>
+
+            <Image
+              src="/icon-wallet.svg"
+              alt="Vercel Logo"
+              className=" mx-auto"
+              width={50}
+              height={30}
+              priority
+            />
+            <h2 className="text-3xl font-bold mb-0">Wallet</h2>
+          </Link>
         </div>
 
         <div className="flex flex-1 items-center justify-end gap-x-8">
@@ -70,20 +64,21 @@ export default function NavBar() {
             <label htmlFor="currency" className="sr-only">
               Currency
             </label>
+
             <select
               id="currency"
               name="currency"
               value={selectedCurrency}
               onChange={handleCurrencyChange}
               className="h-full rounded-md border-0 bg-transparent py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-              <option value="usd">USD</option>
-              <option value="cad">CAD</option>
-              <option value="myr">MYR</option>
-              <option value="eur">EUR</option>
+              {currencyOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
           <a href="#" className="-m-1.5 p-1.5">
-           
             <img
               className="h-8 w-8 rounded-full bg-gray-800"
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"

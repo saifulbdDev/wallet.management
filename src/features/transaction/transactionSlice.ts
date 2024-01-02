@@ -32,6 +32,9 @@ const transactionSlice = createSlice({
       console.log(action.payload, 'action.payload')
       state.notes.push(action.payload);
     },
+    addNotes: (state, action: PayloadAction<Note[]>) => {
+      state.notes = [...state.notes, ...action.payload];
+    },
     removeNote: (state, action: PayloadAction<string>) => {
       state.notes = state.notes.filter((note) => note.id !== action.payload);
     },
@@ -41,7 +44,7 @@ const transactionSlice = createSlice({
 
 export const {
   setCurrency,
-  addNote, removeNote
+  addNote, removeNote, addNotes
  
 } = transactionSlice.actions;
 export default transactionSlice.reducer;

@@ -17,7 +17,7 @@ const statuses = {
 };
 
 const NoteItem: React.FC<NoteItemProps> = ({ note, removeNote, handleViewNote }) => {
-  const { id, currency, total_amount, type, text, created_date } = note;
+  const { id, currency, total_amount, type, text, created_date , currency_note} = note;
 
   return (
     <li key={id} className="flex items-center justify-between gap-x-6 py-5">
@@ -25,6 +25,9 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, removeNote, handleViewNote })
         <div className="flex items-start gap-x-3">
           <p className="text-sm font-semibold leading-6 text-gray-900">
             <b>Amount :</b> {getCurrencySymbols(currency)} {total_amount}
+          </p>
+          <p className="text-sm font-semibold leading-6 text-gray-900">
+            <b>Currency Note :</b> {currency_note}
           </p>
           <p
             className={classnames(`

@@ -27,7 +27,7 @@ const Balance: React.FC<BalanceProps> = ({ data, convartCurrency }) => {
     
     
       <table className="min-w-full">
-        <thead className="border-b border-gray-300 text-gray-900">
+        <thead className="border-b border-gray-300  text-gray-900">
           <tr>
             <th
               scope="col"

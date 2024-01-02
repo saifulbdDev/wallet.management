@@ -18,7 +18,16 @@ interface ViewNoteProps {
 }
 
 const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
-  const { id, currency, total_amount, type, text, created_date } = note;
+  const {
+    id,
+    currency,
+    total_amount,
+    type,
+    text,
+    created_date,
+    currency_note,
+    count
+  } = note;
   return (
     <Dialog
       open={isOpen}
@@ -37,6 +46,9 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
                 <p className="text-sm font-semibold leading-6 text-gray-900">
                   <b>Amount :</b> {getCurrencySymbols(currency)} {total_amount}
                 </p>
+                <p className="text-sm font-semibold leading-6 text-gray-900">
+                  <b>Currency Note :</b> {currency_note}
+                </p>
                 <p
                   className={classnames(`
               rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium',
@@ -47,8 +59,11 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
               <div>
                 <p className="whitespace-nowrap">{text}</p>
               </div>
-              <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                <p className="whitespace-nowrap">
+              <div className="mt-1 flex items-center gap-x-4 text-xs leading-5 text-gray-500">
+                <p className="text-sm font-semibold leading-6 text-gray-900">
+                  <b>Count :</b> {count}
+                </p>
+                <p className="whitespace-nowrap text-gray-900">
                   <b>Created Date :</b> {created_date}
                 </p>
               </div>

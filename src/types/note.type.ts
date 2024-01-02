@@ -6,7 +6,7 @@ export interface Note {
   total_amount: number;
   text?: string;
   type:string;
-  created_date: Date; 
+  created_date: string; 
 }
 
 
