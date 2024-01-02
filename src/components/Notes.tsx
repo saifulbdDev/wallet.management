@@ -18,12 +18,14 @@ interface NotesProps {
 const Notes: React.FC<NotesProps> = ({ notes, removeNote, handleViewNote }) => {
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(notes.length / itemsPerPage);
+  const paginationDisplayLimit = 5;
 
   const indexOfLastNote = currentPage * itemsPerPage;
   const indexOfFirstNote = indexOfLastNote - itemsPerPage;
   const currentNotes = notes.slice(indexOfFirstNote, indexOfLastNote);
 
-  const totalPages = Math.ceil(notes.length / itemsPerPage);
+  const paginatedPages = Array.from({ length: Math.min(totalPages, paginationDisplayLimit) }).map((_, index) => index + 1);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -50,19 +52,19 @@ const Notes: React.FC<NotesProps> = ({ notes, removeNote, handleViewNote }) => {
                 <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               </button>
             </li>
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <li key={index} className="inline-block">
+            {paginatedPages.map((pageNumber) => (
+              <li key={pageNumber} className="inline-block">
                 <button
-                  onClick={() => paginate(index + 1)}
+                  onClick={() => paginate(pageNumber)}
                   className={classnames(
-                    'relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex',
+                    'relative items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 inline-flex',
                     {
-                      'bg-indigo-500 text-white': currentPage === index + 1,
-                      'bg-gray-200 text-gray-800': currentPage !== index + 1,
+                      'bg-indigo-500 text-white': currentPage === pageNumber,
+                      'bg-gray-200 text-gray-800': currentPage !== pageNumber,
                     }
                   )}
                 >
-                  {index + 1}
+                  {pageNumber}
                 </button>
               </li>
             ))}

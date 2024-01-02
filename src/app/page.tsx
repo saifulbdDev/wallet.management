@@ -95,7 +95,7 @@ const Home: React.FC<HomeProps> = () => {
 
   return (
     <div className="px-8 py-8 sm:px-6 lg:px-8 mx-auto space-y-10 w-full max-w-7xl">
-      <div className="flex items-center justify-between">
+      <div className="sm:flex sm:items-center sm:justify-between">
         <div>
           <span>Welcome to Your Financial Hub</span>
           <h2 className="text-3xl font-bold">Personal Wallet Management</h2>
@@ -110,8 +110,8 @@ const Home: React.FC<HomeProps> = () => {
         </div>
       </div>
       {notes.length > 0 ? (
-        <div className="flex space-x-5">
-          <div className="md:w-3/5">
+        <div className="flex flex-wrap md:flex-nowrap md:space-x-5 ">
+          <div className="md:w-3/5 w-full order-1 md:order-none ">
             <div className="bg-white shadow-lg p-3">
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
@@ -135,7 +135,7 @@ const Home: React.FC<HomeProps> = () => {
               />
             </div>
           </div>
-          <div className="md:w-2/5 space-y-8">
+          <div className="md:w-2/5 w-full space-y-8 md:mb-0 mb-10">
             <>
               <div className="bg-indigo-700 bg-[url('/background-currency.svg')] bg-no-repeat bg-center bg-contain rounded-3xl shadow-lg p-3">
                 <div className="text-left border border-white md:w-full inline-block rounded-xl px-7 p-3">
