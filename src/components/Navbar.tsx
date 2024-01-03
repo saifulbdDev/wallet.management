@@ -53,10 +53,10 @@ export default function NavBar() {
           </Link>
         </div>
 
-        <div className="flex flex-1 items-center justify-end gap-x-8">
+        <div className="flex flex-1 items-center justify-end gap-x-4 sm:gap-x-8">
           <button
             type="button"
-            className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+            className="-m-2.5 p-2.5 hidden sm:block text-gray-400 hover:text-gray-500">
             <span className="sr-only">View notifications</span>
             <BellIcon className="h-6 w-6" aria-hidden="true" />
           </button>
@@ -79,9 +79,11 @@ export default function NavBar() {
             </select>
           </div>
           <a href="#" className="-m-1.5 p-1.5">
-            <img
+            <Image
+              width={32}
+              height={32}
               className="h-8 w-8 rounded-full bg-gray-800"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              src="/user.png"
               alt=""
             />
           </a>
@@ -105,9 +107,11 @@ export default function NavBar() {
             <div className="-ml-0.5">
               <a href="#" className="-m-1.5 block p-1.5">
                 <span className="sr-only">Your Company</span>
-                <img
+                <Image
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  width={32}
+                  height={32}
+                  src="/icon-wallet.svg"
                   alt=""
                 />
               </a>

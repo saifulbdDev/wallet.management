@@ -74,7 +74,7 @@ const Statistics: React.FC<StatisticsProps> = ({ notes }) => {
   };
 
   return (
-    <div className="px-2 py-3.5 bg-white shadow-lg rounded-2xl">
+    <div className="px-2 py-3.5 bg-white border rounded-lg shadow-sm">
       {statistics?.series?.length ? <HighchartsReact highcharts={Highcharts} options={statistics} /> : ""}
     </div>
   );

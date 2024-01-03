@@ -1,18 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import Notes from "@/components/Notes";
-import React, { useState } from "react";
+import React, { useState, useMemo, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrencySymbols } from "@/utils";
 import AddNote from "@/components/AddNote";
-import { Note, TransactioState } from "@/types/note.type";
+import Notes from "@/components/Notes";
+import { Note, TransactioState, CurrencyTotals } from "@/types/note.type";
 import { addNote, removeNote, addNotes } from "@/features/transaction/transactionSlice";
 import { useGetCurrencyQuery } from "@/features/transaction/currencyApi";
 import Balance from "@/components/Balance";
 import ViewNote from "@/components/ViewNote";
 import Statistics from "@/components/Statistics";
 import Button from "@/components/ui/Buttons/Button";
-import {generateRandomNote} from "@/utils"
+import { generateRandomNote } from "@/utils";
+
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
@@ -40,11 +41,11 @@ const Home: React.FC<HomeProps> = () => {
 
   const selectCurrency = getCurrencySymbols(currency);
 
-  const convertCurrency = (amount: number, currency: string): number => {
+  const convertCurrency = useMemo(() => (amount: number, convertCurrency: string): number => {
     const exchangeRate =
-      data?.data["USD"]?.value / data?.data[currency?.toUpperCase()]?.value;
+      data?.data[currency?.toUpperCase()]?.value / data?.data[convertCurrency?.toUpperCase()]?.value;
     return Math.ceil(amount * exchangeRate) || 0;
-  };
+  }, [data, currency]);
 
   const handleAddNote = (note: Note) => {
     let convertedCount = note.count * note.currency_note;
@@ -65,44 +66,65 @@ const Home: React.FC<HomeProps> = () => {
   const handleRemoveNote = (noteId: string) => {
     dispatch(removeNote(noteId));
   };
+
   const handleRandomNote = async (): Promise<void> => {
-    const promises: Promise<Note>[] = Array.from({ length: 100 }, () => generateRandomNote());
-  
+    const promises: Promise<Note>[] = Array.from({ length: 100 }, generateRandomNote);
+
     const results = await Promise.allSettled(promises);
-  
+
     const successfulResults = results
-      .filter(result => result.status === 'fulfilled')
-      .map(result => (result as PromiseFulfilledResult<Note>).value);
-  
+      .filter((result) => result.status === "fulfilled")
+      .map((result) => (result as PromiseFulfilledResult<Note>).value);
+
     dispatch(addNotes(successfulResults));
-  
+
     const errors = results
-      .filter(result => result.status === 'rejected')
-      .map(result => (result as PromiseRejectedResult).reason);
-  
+      .filter((result) => result.status === "rejected")
+      .map((result) => (result as PromiseRejectedResult).reason);
+
     if (errors.length > 0) {
-      console.error('Errors occurred during random note generation:', errors);
+      console.error("Errors occurred during random note generation:", errors.map(error => error.message));
     }
   };
-  const calculateTotalBalance = (currency: string) => {
-    return notes.reduce(
-      (total, note) => total + note.currency_note * note.count,
+
+  const currencyTotals: Record<string, number> = notes.reduce(
+    (acc, transaction) => {
+      const { currency, total_amount } = transaction;
+      acc[currency] = (acc[currency] || 0) + total_amount;
+      return acc;
+    },
+    {} as CurrencyTotals
+  );
+
+  const convartTotal = (amount: number, fromCurrency: string, toCurrency: string): number => {
+    const convertedAmount = amount * (data?.data[toCurrency?.toUpperCase()]?.value  / data?.data[fromCurrency?.toUpperCase()]?.value);
+    return convertedAmount;
+  };
+
+  const calculateTotalBalance = (): number => {
+    return Object.entries(currencyTotals).reduce(
+      (total, [currentCurrency, totalAmount]) => {
+        return Math.ceil(total + convartTotal(totalAmount, currentCurrency, currency));
+      },
       0
     );
   };
 
+  let totalBalance = calculateTotalBalance();
+
   return (
-    <div className="px-8 py-8 sm:px-6 lg:px-8 mx-auto space-y-10 w-full max-w-7xl">
-      <div className="sm:flex sm:items-center sm:justify-between">
+    <div className="p-4  sm:px-6 lg:px-8 mx-auto space-y-10 w-full max-w-7xl">
+      <div className="sm:flex sm:items-center space-y-2 sm:space-y-0 sm:justify-between">
         <div>
-          <span>Welcome to Your Financial Hub</span>
-          <h2 className="text-3xl font-bold">Personal Wallet Management</h2>
+          <span className="sm:text-3xl text-sm">Welcome to Your Financial Hub</span>
+          <h2 className="sm:text-3xl text-xl font-bold">Personal Wallet Management</h2>
         </div>
         <div>
           <button
             type="button"
             onClick={() => setIsAddNoteOpen(true)}
-            className="block rounded-md bg-indigo-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700">
+            className="block rounded-md bg-indigo-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
+          >
             Add Note
           </button>
         </div>
@@ -110,21 +132,11 @@ const Home: React.FC<HomeProps> = () => {
       {notes.length > 0 ? (
         <div className="flex flex-wrap md:flex-nowrap md:space-x-5 ">
           <div className="md:w-3/5 w-full order-1 md:order-none ">
-            <div className="bg-white shadow-lg p-3">
+            <div className="bg-white border rounded-lg shadow-sm p-3">
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
-                  <h1 className="text-lg font-bold leading-6 text-gray-900">
-                    Recent Notes
-                  </h1>
+                  <h1 className="text-lg font-bold leading-6 text-gray-900">Recent Notes</h1>
                 </div>
-                {/* <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                  <button
-                  type="button"
-                  onClick={() => setIsAddNoteOpen(true)}
-                  className="block rounded-md bg-indigo-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700">
-                  Add Note
-                </button>
-              </div> */}
               </div>
               <Notes
                 removeNote={handleRemoveNote}
@@ -134,54 +146,38 @@ const Home: React.FC<HomeProps> = () => {
             </div>
           </div>
           <div className="md:w-2/5 w-full space-y-8 md:mb-0 mb-10">
-            <>
-              <div className="bg-indigo-700 bg-[url('/background-currency.svg')] bg-no-repeat bg-center bg-contain rounded-3xl shadow-lg p-3">
-                <div className="text-left border border-white md:w-full inline-block rounded-xl px-7 p-3">
-                  <h2 className="uppercase text-white text-base">
-                    your balance
-                  </h2>
-                  <span className="text-3xl uppercase text-white font-bold">
-                    {calculateTotalBalance(currency)} {currency}
-                  </span>
-                </div>
-                <h2 className="capitalize mt-3 text-xl text-white font-bold">
-                  currency wise balance List
-                </h2>
-                <Balance data={notes} convertCurrency={convertCurrency} />
-              </div>
-              <Statistics notes={notes} />
-            </>
+            <Balance loacalCurrency={currency} totalBalance={totalBalance || 0} currencyTotals={currencyTotals} convertCurrency={convertCurrency} />
+            <Statistics notes={notes} />
           </div>
         </div>
       ) : (
         <div className="min-h-full h-[300px] flex flex-grow items-center justify-center bg-gray-50">
-          <div className="rounded-lg bg-white p-8 text-center shadow-xl">
-            <h1 className="mb-4 text-4xl font-bold">Emtry Note</h1>
+          <div className="rounded-lg bg-white p-8 text-center sm:shadow-xl">
+            <h1 className="mb-4 text-4xl font-bold">Empty Note</h1>
             <p className="text-gray-600">
-            Oops! The note you are looking for is missing. For testing purposes, please click on the 'Random Note Generator' to display random data, and create a new note by clicking the 'Add Note' button.
+              Oops! The note you are looking for is missing. For testing purposes, please click on the 'Random Note Generator' to display random data, and create a new note by clicking the 'Add Note' button.
             </p>
-            <Button className="py-1.5 px-3 mt-4 rounded-md" onClick={handleRandomNote}>
+            <Button
+              className="py-1.5 px-3 mt-4 rounded-md"
+              onClick={handleRandomNote}
+            >
               Random Note Generator
             </Button>
           </div>
         </div>
       )}
 
-      <AddNote
-        isOpen={isAddNoteOpen}
-        setIsOpen={setIsAddNoteOpen}
-        addNote={handleAddNote}
-        currency={selectCurrency}
-      />
-      {isViewNoteOpen ? (
-        <ViewNote
-          isOpen={isViewNoteOpen}
-          setIsOpen={setIsViewNoteOpen}
-          note={singleNote}
+      <Suspense fallback={<div>Loading...</div>}>
+        <AddNote
+          isOpen={isAddNoteOpen}
+          setIsOpen={setIsAddNoteOpen}
+          addNote={handleAddNote}
+          currency={selectCurrency}
         />
-      ) : (
-        ""
-      )}
+        {isViewNoteOpen && (
+          <ViewNote isOpen={isViewNoteOpen} setIsOpen={setIsViewNoteOpen} note={singleNote} />
+        )}
+      </Suspense>
     </div>
   );
 };

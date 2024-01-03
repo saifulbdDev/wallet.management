@@ -36,7 +36,7 @@ export const currencyOptions = [
   export const navigation = [
     { name: "Home", href: "#" },
     { name: "Invoices", href: "#" },
-    { name: "Clients", href: "#" },
+    { name: "Income", href: "#" },
     { name: "Expenses", href: "#" }
   ];
   export const uuidv4 = () => {

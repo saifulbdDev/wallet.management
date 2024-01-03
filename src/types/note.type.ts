@@ -9,7 +9,9 @@ export interface Note {
   created_date: string; 
 }
 
-
+export interface CurrencyTotals {
+  [currency: string]: number;
+}
 
 
 export interface  TransactioState {
