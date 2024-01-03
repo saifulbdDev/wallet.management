@@ -151,8 +151,8 @@ const Home: React.FC<HomeProps> = () => {
           </div>
         </div>
       ) : (
-        <div className="min-h-full h-[300px] flex flex-grow items-center justify-center bg-gray-50">
-          <div className="rounded-lg bg-white p-8 text-center sm:shadow-xl">
+        <div className="min-h-full h-[300px] border flex flex-grow items-center justify-center bg-white">
+          <div className="rounded-lg  text-center sm:shadow-sm py-5">
             <h1 className="mb-4 text-4xl font-bold">Empty Note</h1>
             <p className="text-gray-600">
               Oops! The note you are looking for is missing. For testing purposes, please click on the 'Random Note Generator' to display random data, and create a new note by clicking the 'Add Note' button.

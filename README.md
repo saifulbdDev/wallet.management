@@ -2,7 +2,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+**Prerequisites:**
+- Node.js 18.17 or later.
+
+First, install the project dependencies:
+
+```bash
+npm install
+# or
+yarn
+
+```
+ run the development server:
 
 ```bash
 npm run dev
@@ -13,24 +24,43 @@ pnpm dev
 # or
 bun dev
 ```
+# Persistence in Wallet Management App
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Redux Persist
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project utilizes [Redux Persist](https://github.com/rt2zz/redux-persist) to offer a straightforward method for persisting the entire Redux store. Redux Persist allows the application state to persist across sessions, enhancing the user experience by preserving state data.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To integrate Redux Persist in your project, make sure to follow these steps:
 
-## Learn More
+1. **Installation:**
+   ```bash
+   npm install redux-persist
+   # or
+   yarn add redux-persist
 
-To learn more about Next.js, take a look at the following resources:
+# Form Validation in Wallet Management App
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Validation with Formik and Yup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This project utilizes [Formik](https://formik.org/) for managing forms and [Yup](https://github.com/jquense/yup) for validation. Formik simplifies form handling in React applications, while Yup is a powerful validation library.
 
-## Deploy on Vercel
+### Installation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+First, install the required dependencies:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm install formik yup
+# or
+yarn add formik yup
+
+# generateRandomNote Function 
+
+```
+The `generateRandomNote` function is a utility in the Wallet Management App that creates a random note with mock data. This function is useful for testing and populating your application with sample notes.
+
+## Usage
+
+1. **Import the Function:**
+
+ typescript
+import { generateRandomNote } from "@/utils";
