@@ -27,15 +27,15 @@ const Input = (props) => {
     `w-full focus:border-neutral-200 focus:outline-none rounded-md ${
       errorText && error
         ? 'text-red-700 focus:border-red-900 border-red-400 border-solid focus:ring-red-200'
-        : 'border-[#4FAFA8] dark:border-white dark:ring-white focus:ring-[#4FAFA8] hover:border-[#4FAFA8] border-solid bg-white placeholder:text-[#808080]'
-    } border dark:autofill:!bg-[#292929] outline-none text-base dark:bg-[#292929] dark:text-white font-light dark:inputDarkModeOverride ${inputClass}`,
+        : 'border-[#4FAFA8]  focus:ring-[#4FAFA8] hover:border-[#4FAFA8] border-solid bg-white placeholder:text-[#808080]'
+    } border  outline-none text-base font-light  ${inputClass}`,
   );
   return (
     <div className={containerClass}>
       {label ? (
         <label
           htmlFor={id}
-          className={`block mb-[5px] text-sm font-medium capitalize text-gray-700 dark:text-white ${labelClass}`}
+          className={`block mb-[5px] text-sm font-medium capitalize text-gray-700  ${labelClass}`}
         >
           {label} {required && <span className="text-red">*</span>}
         </label>
@@ -57,7 +57,7 @@ const Input = (props) => {
               onClick={(e) => setIsPassword(false)}
               className="absolute flex items-center leading-5 inset-y-3 right-2"
             >
-              <Eye className="text-blue-600 stroke-[#222222] dark:stroke-white" />
+              <Eye className="text-blue-600 stroke-[#222222] " />
             </button>
           ) : (
             <button
@@ -65,7 +65,7 @@ const Input = (props) => {
               onClick={(e) => setIsPassword(true)}
               className="absolute flex items-center leading-5 inset-y-3 right-2"
             >
-              <EyeSlash className="stroke-[#222222]   dark:stroke-white" />
+              <EyeSlash className="stroke-[#222222]   " />
             </button>
           )}
         </div>

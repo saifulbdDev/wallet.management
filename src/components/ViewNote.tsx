@@ -46,6 +46,9 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
                 <p className="text-sm font-semibold leading-6 text-gray-900">
                   <b>Amount :</b> {getCurrencySymbols(currency)} {total_amount}
                 </p>
+                <p className="whitespace-nowrap text-gray-900">
+              
+              </p>
 
                 <p
                   className={classnames(
@@ -59,19 +62,19 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
               <div>
                 <p className="whitespace-nowrap">{text}</p>
               </div>
-              <div className="mt-1 flex items-center gap-x-4 text-xs leading-5 text-gray-500">
+            
+              <div className="mt-1 text-sm leading-5 text-gray-500">
                 {counts.map((item, index) => (
                   <p
                     key={index}
-                    className="relative  align-middle text-black space-x-2">
-                    <b>Currency Note </b>: <span>{item.currency_note}</span>
-                    <b>count </b>: <span> {item.count}</span>
+                    className="relative  align-middle text-black ">
+                    <b> {getCurrencySymbols(currency)} {item.currency_note} Notes </b> - <span>{item.count}</span>
                   </p>
                 ))}
               </div>
-              <p className="whitespace-nowrap text-gray-900">
-                <b>Created Date :</b> {created_date}
-              </p>
+
+              <b>Created Date :</b> {created_date}
+             
             </div>
           </div>
           <div className="w-full py-4 px-5 flex justify-end border-t border-solid space-x-3">

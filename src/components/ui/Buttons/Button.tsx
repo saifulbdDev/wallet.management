@@ -15,9 +15,9 @@ const classes = {
 
   variant: {
     primary:
-      'bg-indigo-500 hover:bg-indigo-300 focus:ring-2 focus:ring-indigo-300 focus:ring-opacity-50 text-white',
+      'bg-indigo-700 hover:bg-indigo-300 focus:ring-2 focus:ring-indigo-300 focus:ring-opacity-50 text-white',
     secondary:
-      'bg-gray-200 hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-gray-900 dark:text-white hover:text-white',
+      'bg-white hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-gray-900  hover:text-white',
     danger:
       'bg-red-500 hover:bg-red-800 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white',
     white: 'bg-white text-indigo-400 hover:bg-indigo-300 hover:text-white',

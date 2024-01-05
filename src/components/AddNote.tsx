@@ -4,7 +4,7 @@ import { Dialog } from "@headlessui/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Buttons/Button";
 import { noteSchema } from "@/utils/validations/note";
-import { Formik, Form, FieldArray } from "formik";
+import { Formik, Form, FieldArray, FieldArrayRenderProps  } from "formik";
 import { Note } from "@/types/note.type";
 import { formatDate, uuidv4 } from "@/utils";
 import { TrashIcon, PlusCircleIcon } from "@heroicons/react/20/solid";
@@ -18,12 +18,7 @@ interface AddNoteProps {
 
 const denominations = [1, 5, 10, 20];
 
-const AddNote: React.FC<AddNoteProps> = ({
-  isOpen,
-  setIsOpen,
-  addNote,
-  currency
-}) => {
+const AddNote: React.FC<AddNoteProps> = ({ isOpen, setIsOpen, addNote, currency }) => {
   const initialValues: Note = {
     id: "",
     currency: "",
@@ -43,7 +38,8 @@ const AddNote: React.FC<AddNoteProps> = ({
     let newDate = formatDate();
     const counts = values.counts.map(countItem => ({
       ...countItem,
-      currency_note: Number(countItem.currency_note)
+      currency_note: Number(countItem.currency_note),
+      count: Number(countItem.count),
     }));
     const totalAmount = counts.reduce(
       (total, countItem) => total + countItem.count * countItem.currency_note,
@@ -52,14 +48,13 @@ const AddNote: React.FC<AddNoteProps> = ({
 
     addNote({
       ...values,
-      counts, // Use the updated counts array
+      counts,
       created_date: newDate,
       id: uuidv4(),
       total_amount: totalAmount
     });
     setIsOpen(false);
   };
-
   return (
     <Dialog
       open={isOpen}
@@ -93,10 +88,10 @@ const AddNote: React.FC<AddNoteProps> = ({
                       : ""
                   }`}>
                   <div className="mb-4 w-full">
-                    <label className="block mb-[5px] text-sm font-medium capitalize text-gray-700 dark:text-white">
+                    <label className="block mb-[5px] text-sm font-medium capitalize text-gray-700 ">
                       Total Amount
                     </label>
-                    <p className="border-[#4FAFA8] w-full  rounded-md border py-2 px-3 dark:border-white dark:ring-white focus:ring-[#4FAFA8] hover:border-[#4FAFA8] border-solid bg-white">
+                    <p className="border-[#4FAFA8] w-full  rounded-md border py-2 px-3  focus:ring-[#4FAFA8] hover:border-[#4FAFA8] border-solid bg-white">
                       {values.counts.reduce(
                         (totalAmount, countItem) =>
                           totalAmount +
@@ -106,8 +101,8 @@ const AddNote: React.FC<AddNoteProps> = ({
                     </p>
                   </div>
                   <FieldArray
-                    name="counts"
-                    render={(arrayHelpers) => (
+                   name={`counts`}
+                   render={(arrayHelpers: FieldArrayRenderProps) => (
                       <>
                         {values.counts && values.counts.length > 0
                           ? values.counts.map((item, index) => (
@@ -118,7 +113,7 @@ const AddNote: React.FC<AddNoteProps> = ({
                                   name={`counts.${index}.count`}
                                   type="number"
                                   min={0}
-                                  //@ts-ignore
+                               
                                   errorText={errors.counts?.[index]?.count}
                                   error={touched.counts?.[index]?.count}
                                   onBlur={handleBlur}
@@ -132,7 +127,7 @@ const AddNote: React.FC<AddNoteProps> = ({
                                   name={`counts.${index}.currency_note`}
                                   component="select"
                                   errorText={
-                                    //@ts-ignore
+                                 
                                     errors.counts?.[index]?.currency_note
                                   }
                                   error={touched.counts?.[index]?.currency_note}
@@ -149,10 +144,10 @@ const AddNote: React.FC<AddNoteProps> = ({
                                   ))}
                                 </Input>
                                 <div className="w-1/5 text-center ">
-                                  <label className="block h-6 mb-[5px] text-sm font-medium capitalize text-gray-700 dark:text-white "></label>
+                                  <label className="block h-6 mb-[5px] text-sm font-medium capitalize text-gray-700  "></label>
                                   {index === values.counts.length - 1 ? (
                                     <button
-                                      className="rounded-md bg-indigo-300 mx-auto px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
+                                      className="rounded-md bg-indigo-500 mx-auto px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
                                       type="button"
                                       onClick={() =>
                                         arrayHelpers.push({
