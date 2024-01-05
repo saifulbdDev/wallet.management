@@ -22,8 +22,10 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   const { data, isLoading } = useGetCurrencyQuery({
-    pollingInterval: 3000,
-    refetchOnMountOrArgChange: false
+    pollingInterval: 2000000, // Polling every 20 minutes to match the API fetching frequency
+    refetchOnMountOrArgChange: false,
+    staleTime: 2000000, // Data is considered fresh for 20 minutes
+    cacheTime: 2000000 // Cache the data for 20 minutes
   });
 
   const [isViewNoteOpen, setIsViewNoteOpen] = useState(false);
@@ -49,7 +51,6 @@ const Home: React.FC<HomeProps> = () => {
   );
 
   const selectCurrency = getCurrencySymbols(currency);
-
 
   const handleAddNote = (note: Note) => {
     dispatch(
