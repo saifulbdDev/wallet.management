@@ -113,7 +113,7 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, setIsOpen, addNote, currency 
                                   name={`counts.${index}.count`}
                                   type="number"
                                   min={0}
-                               
+                                 // @ts-ignore
                                   errorText={errors.counts?.[index]?.count}
                                   error={touched.counts?.[index]?.count}
                                   onBlur={handleBlur}
@@ -127,7 +127,7 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, setIsOpen, addNote, currency 
                                   name={`counts.${index}.currency_note`}
                                   component="select"
                                   errorText={
-                                 
+                                 // @ts-ignore
                                     errors.counts?.[index]?.currency_note
                                   }
                                   error={touched.counts?.[index]?.currency_note}
