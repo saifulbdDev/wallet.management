@@ -17,7 +17,7 @@ const statuses: Record<string, string> = {
 };
 
 const NoteItem: React.FC<NoteItemProps> = ({ note, removeNote, handleViewNote }) => {
-  const { id, currency, total_amount, type, text, created_date, currency_note } = note;
+  const { id, currency, total_amount, type, text, created_date } = note;
 
   return (
     <li key={id} className="flex items-center justify-between gap-x-6 py-5">
@@ -26,9 +26,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, removeNote, handleViewNote })
           <p className="text-sm font-semibold leading-6 text-gray-900">
             <b>Amount :</b> {getCurrencySymbols(currency)} {total_amount}
           </p>
-          <p className="text-sm font-semibold leading-6 text-gray-900">
-            <b>Currency Note :</b> {currency_note}
-          </p>
+         
           <p
             className={classnames(
               'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium',

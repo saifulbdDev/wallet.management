@@ -1,8 +1,12 @@
+export interface Count{
+  currency_note:number;
+ count: number;
+}
 export interface Note {
   id: string;
-  currency_note: number;
+ 
   currency: string;
-  count: number;
+  counts: Count[];
   total_amount: number;
   text?: string;
   type:string;

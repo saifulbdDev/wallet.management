@@ -62,5 +62,4 @@ The `generateRandomNote` function is a utility in the Wallet Management App that
 
 1. **Import the Function:**
 
- typescript
 import { generateRandomNote } from "@/utils";

@@ -7,9 +7,9 @@ import { getCurrencySymbols } from "@/utils";
 import { Note } from "@/types/note.type";
 
 const statuses: Record<string, string> = {
-  Income: 'text-green-700 bg-green-50 ring-green-600/20',
-  'In progress': 'text-gray-600 bg-gray-50 ring-gray-500/10',
-  Expense: 'text-yellow-800 bg-yellow-50 ring-yellow-600/20',
+  Income: "text-green-700 bg-green-50 ring-green-600/20",
+  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
+  Expense: "text-yellow-800 bg-yellow-50 ring-yellow-600/20"
 };
 interface ViewNoteProps {
   isOpen: boolean;
@@ -25,8 +25,8 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
     type,
     text,
     created_date,
-    currency_note,
-    count
+
+    counts
   } = note;
   return (
     <Dialog
@@ -46,11 +46,13 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
                 <p className="text-sm font-semibold leading-6 text-gray-900">
                   <b>Amount :</b> {getCurrencySymbols(currency)} {total_amount}
                 </p>
-                <p className="text-sm font-semibold leading-6 text-gray-900">
-                  <b>Currency Note :</b> {currency_note}
-                </p>
+
                 <p
-                  className={classnames(`rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium', ${statuses[type] as string}`)}>
+                  className={classnames(
+                    `rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium', ${
+                      statuses[type] as string
+                    }`
+                  )}>
                   {type}
                 </p>
               </div>
@@ -58,18 +60,23 @@ const ViewNote: React.FC<ViewNoteProps> = ({ isOpen, setIsOpen, note }) => {
                 <p className="whitespace-nowrap">{text}</p>
               </div>
               <div className="mt-1 flex items-center gap-x-4 text-xs leading-5 text-gray-500">
-                <p className="text-sm font-semibold leading-6 text-gray-900">
-                  <b>Count :</b> {count}
-                </p>
-                <p className="whitespace-nowrap text-gray-900">
-                  <b>Created Date :</b> {created_date}
-                </p>
+                {counts.map((item, index) => (
+                  <p
+                    key={index}
+                    className="relative  align-middle text-black space-x-2">
+                    <b>Currency Note </b>: <span>{item.currency_note}</span>
+                    <b>count </b>: <span> {item.count}</span>
+                  </p>
+                ))}
               </div>
+              <p className="whitespace-nowrap text-gray-900">
+                <b>Created Date :</b> {created_date}
+              </p>
             </div>
           </div>
           <div className="w-full py-4 px-5 flex justify-end border-t border-solid space-x-3">
             <Button
-              onClick={(e) => {
+              onClick={(_e) => {
                 setIsOpen(false);
               }}
               type="button"
