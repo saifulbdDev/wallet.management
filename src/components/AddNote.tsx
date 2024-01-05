@@ -216,7 +216,7 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, setIsOpen, addNote, currency 
                   <Button
                     isSubmitting={isSubmitting}
                     type="submit"
-                    disabled={isValidating || !noteSchema.isValidSync(values)}
+               
                     className="w-full rounded-lg text-base lg:py-2.5 py-1.5">
                     Add Note
                   </Button>
