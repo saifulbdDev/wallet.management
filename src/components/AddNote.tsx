@@ -147,7 +147,7 @@ const AddNote: React.FC<AddNoteProps> = ({ isOpen, setIsOpen, addNote, currency 
                                   <label className="block h-6 mb-[5px] text-sm font-medium capitalize text-gray-700  "></label>
                                   {index === values.counts.length - 1 ? (
                                     <button
-                                      className="rounded-md bg-indigo-500 mx-auto px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
+                                      className="rounded-md bg-indigo-500 mx-auto px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-indigo-300 sm:block"
                                       type="button"
                                       onClick={() =>
                                         arrayHelpers.push({
